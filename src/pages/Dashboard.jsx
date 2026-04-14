@@ -1,72 +1,57 @@
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../../firebase.config";
 import { doc, getDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import SkillsSection from "../components/SkillsSection";
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
+
+  const [skillsOffered, setSkillsOffered] = useState([]);
+  const [skillsWanted, setSkillsWanted] = useState([]);
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
+    const fetchData = async () => {
       if (!user) return;
 
-      try {
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
+      const ref = doc(db, "users", user.uid);
+      const snap = await getDoc(ref);
 
-        if (docSnap.exists()) {
-          setProfile(docSnap.data());
-        }
-      } catch (error) {
-        console.error(error);
+      if (snap.exists()) {
+        const data = snap.data();
+        setSkillsOffered(data.skillsOffered || []);
+        setSkillsWanted(data.skillsWanted || []);
       }
-
-      setLoading(false);
     };
 
-    fetchUserProfile();
+    fetchData();
   }, [user]);
 
-  if (loading) return <p>Loading dashboard...</p>;
-
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+    <div className="p-6 space-y-6">
 
-      {/* USER INFO */}
-      <div className="bg-white p-4 shadow rounded mb-4">
-        <h2 className="font-semibold">User Info</h2>
-        <p>Email: {user?.email}</p>
+      <h1 className="text-2xl font-bold">Dashboard</h1>
+
+      <div className="grid md:grid-cols-2 gap-6">
+
+        <SkillsSection
+          title="Skills I Offer"
+          skills={skillsOffered}
+          setSkills={setSkillsOffered}
+          type="skillsOffered"
+          color="blue"
+        />
+
+        <SkillsSection
+          title="Skills I Want to Learn"
+          skills={skillsWanted}
+          setSkills={setSkillsWanted}
+          type="skillsWanted"
+          color="green"
+        />
+
       </div>
 
-      {/* SKILLS OFFERED */}
-      <div className="bg-white p-4 shadow rounded mb-4">
-        <h2 className="font-semibold">Skills I Can Teach</h2>
-        {profile?.skillsOffered?.length > 0 ? (
-          <ul className="list-disc ml-5">
-            {profile.skillsOffered.map((skill, index) => (
-              <li key={index}>{skill}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No skills added yet</p>
-        )}
-      </div>
-
-      <div className="bg-white p-4 shadow rounded mb-4">
-        <h2 className="font-semibold">Skills I Want</h2>
-        {profile?.skillsWanted?.length > 0 ? (
-          <ul className="list-disc ml-5">
-            {profile.skillsWanted.map((skill, index) => (
-              <li key={index}>{skill}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No skills added yet</p>
-        )}
-      </div>
     </div>
   );
 };

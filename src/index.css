@@ -1,1 +1,31 @@
 @import "tailwindcss";
+
+
+:root {
+  --green-950: #0a1f0f;
+  --green-900: #122a18;
+  --green-800: #1a3d23;
+  --green-700: #245530;
+  --green-600: #2d6b3c;
+  --green-500: #3a8a4e;
+  --green-400: #52a869;
+  --green-200: #b6dfc2;
+  --green-100: #dff0e6;
+  --green-50:  #f2faf5;
+
+  --amber-500: #e8943a;
+  --amber-400: #f0a84e;
+  --amber-100: #fdefd8;
+
+  --cream-100: #faf8f3;
+  --cream-200: #f3efe6;
+
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--cream-100);
+  color: var(--green-950);
+}
