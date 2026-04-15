@@ -1,110 +1,105 @@
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+
 const Navbar = () => {
-    const { user, logout } = useAuth();
-    const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    return (
-        <div
-            style={{ background: "var(--cream-100)", fontFamily: "var(--font-body)" }}
+  const isActive = (path) => location.pathname === path;
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
+
+  return (
+    <nav className="sticky top-0 z-50 w-full bg-[rgba(242,250,245,0.92)] backdrop-blur-md border-b border-(--green-100) font-(--font-body)">
+      <div className="h-15 w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <Link
+          to="/"
+          className="font-(--font-display) text-xl text-(--green-800) tracking-tight"
         >
-            <nav
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "1.25rem 2.5rem",
-                    borderBottom: "1px solid var(--green-100)",
-                    background: "var(--cream-100)",
-                }}
-            >
-                <span
-                    style={{
-                        fontFamily: "var(--font-display)",
-                        fontSize: "1.35rem",
-                        color: "var(--green-800)",
-                        letterSpacing: "-0.01em",
-                    }}
-                >
-                    Skilltrade
-                </span>
-                <div style={{ display: "flex", gap: "0.75rem" }}>
-                    {user ? (
-                        <>
-                            <button
-                                onClick={() => navigate("/dashboard")}
-                                style={{
-                                    background: "var(--green-800)",
-                                    color: "#fff",
-                                    border: "none",
-                                    padding: "0.55rem 1.25rem",
-                                    borderRadius: "100px",
-                                    fontSize: "0.875rem",
-                                    fontWeight: 500,
-                                    cursor: "pointer",
-                                    fontFamily: "var(--font-body)",
-                                }}
-                            >
-                                Dashboard
-                            </button>
+          Skilltrade
+        </Link>
 
-                            <button
-                                onClick={logout}
-                                style={{
-                                    background: "var(--green-800)",
-                                    color: "#fff",
-                                    border: "none",
-                                    padding: "0.55rem 1.25rem",
-                                    borderRadius: "100px",
-                                    fontSize: "0.875rem",
-                                    fontWeight: 500,
-                                    cursor: "pointer",
-                                    fontFamily: "var(--font-body)",
-                                }}
-                            >
-                                Logout
-                            </button>
-                        </>
-                    ) : (
-                        <>
-                            <button
-                                onClick={() => navigate("/login")}
-                                style={{
-                                    background: "transparent",
-                                    color: "var(--green-800)",
-                                    border: "1.5px solid var(--green-200)",
-                                    padding: "0.55rem 1.25rem",
-                                    borderRadius: "100px",
-                                    fontSize: "0.875rem",
-                                    fontWeight: 500,
-                                    cursor: "pointer",
-                                    fontFamily: "var(--font-body)",
-                                }}
-                            >
-                                Log in
-                            </button>
-                            <button
-                                onClick={() => navigate("/signup")}
-                                style={{
-                                    background: "var(--green-800)",
-                                    color: "#fff",
-                                    border: "none",
-                                    padding: "0.55rem 1.25rem",
-                                    borderRadius: "100px",
-                                    fontSize: "0.875rem",
-                                    fontWeight: 500,
-                                    cursor: "pointer",
-                                    fontFamily: "var(--font-body)",
-                                }}
-                            >
-                                Get started
-                            </button>
-                        </>
-                    )}
-                </div>
-            </nav>
+        <div className="flex items-center gap-4">
+          <div className="flex gap-1">
+            <Link
+              to="/"
+              className={`text-sm font-medium px-3 py-1.5 rounded-full transition ${
+                isActive("/")
+                  ? "text-(--green-900) bg-(--green-100)"
+                  : "text-(--green-500) hover:text-(--green-800)"
+              }`}
+            >
+              Home
+            </Link>
+
+            <Link
+              to="/explore"
+              className={`text-sm font-medium px-3 py-1.5 rounded-full transition ${
+                isActive("/explore")
+                  ? "text-(--green-900) bg-(--green-100)"
+                  : "text-(--green-500) hover:text-(--green-800)"
+              }`}
+            >
+              Explore
+            </Link>
+
+            {user && (
+              <Link
+                to="/dashboard"
+                className={`text-sm font-medium px-3 py-1.5 rounded-full transition ${
+                  isActive("/dashboard")
+                    ? "text-(--green-900) bg-(--green-100)"
+                    : "text-(--green-500) hover:text-(--green-800)"
+                }`}
+              >
+                Dashboard
+              </Link>
+            )}
+          </div>
+
+          {user ? (
+            <div className="flex items-center gap-3 ml-2">
+
+              <div
+                onClick={() => navigate("/dashboard")}
+                className="w-8 h-8 rounded-full bg-(--green-800) flex items-center justify-center text-xs text-white font-semibold cursor-pointer"
+              >
+                {user.email?.[0]?.toUpperCase()}
+              </div>
+
+              <button
+                onClick={handleLogout}
+                className="px-4 py-1.5 text-sm font-medium border border-(--green-200) text-(--green-700) rounded-full hover:bg-(--green-50) transition"
+              >
+                Sign out
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-3 ml-2">
+
+              <Link
+                to="/login"
+                className="text-sm font-medium text-(--green-700) hover:text-(--green-800) transition"
+              >
+                Sign in
+              </Link>
+
+              <button
+                onClick={() => navigate("/signup")}
+                className="px-4 py-2 text-sm font-medium bg-(--green-800) text-white rounded-full hover:bg-(--green-700) transition"
+              >
+                Get started
+              </button>
+            </div>
+          )}
         </div>
-    );
+      </div>
+    </nav>
+  );
 };
 
 export default Navbar;

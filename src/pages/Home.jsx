@@ -1,315 +1,166 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { Repeat, Users, Sparkles } from "lucide-react";
+import { Repeat, Users, Sparkles, ArrowRight } from "lucide-react";
 
 const features = [
-  {
-    icon: Repeat,
-    title: "Skill Exchange",
-    desc: "Trade expertise directly — no money, no middlemen. Just two people making each other better.",
-  },
-  {
-    icon: Users,
-    title: "Real Connections",
-    desc: "Build lasting professional relationships through the act of mutual learning.",
-  },
-  {
-    icon: Sparkles,
-    title: "Smart Matching",
-    desc: "We surface people who want exactly what you offer, and offer exactly what you need.",
-  },
+    {
+        icon: Repeat,
+        title: "Skill Exchange",
+        desc: "Trade expertise directly. No money, no middlemen. Just real value.",
+    },
+    {
+        icon: Users,
+        title: "Real Connections",
+        desc: "Build meaningful relationships through shared learning.",
+    },
+    {
+        icon: Sparkles,
+        title: "Smart Matching",
+        desc: "Find people who align with your goals instantly.",
+    },
 ];
 
-const section = {
-  width: "100%",
-  padding: "0 4rem",
-};
-
-const container = {
-  maxWidth: "1200px",
-  margin: "0 auto",
-};
-
 const Home = () => {
-  const navigate = useNavigate();
-  const { user } = useAuth();
+    const navigate = useNavigate();
+    const { user } = useAuth();
 
-  return (
-    <div
-      className="min-h-screen"
-      style={{ background: "var(--cream-100)", fontFamily: "var(--font-body)" }}
-    >
-      <section style={{ ...section, paddingTop: "6rem", paddingBottom: "4rem" }}>
-        <div style={{ ...container, textAlign: "center" }}>
+    return (
+        <div className="min-h-screen w-full bg-(--cream-100) text-(--green-900)">
 
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              background: "var(--green-100)",
-              color: "var(--green-700)",
-              fontSize: "0.78rem",
-              fontWeight: 600,
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              padding: "0.35rem 0.9rem",
-              borderRadius: "100px",
-              marginBottom: "2rem",
-            }}
-          >
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                background: "var(--green-500)",
-              }}
-            />
-            Community-powered learning
-          </div>
+            {/* HERO */}
+            <section className="w-full px-6 md:px-12 lg:px-20 pt-28 pb-20">
+                <div className="max-w-375 mx-auto grid lg:grid-cols-2 gap-16 items-center">
 
-          <h1
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(2.6rem, 6vw, 4rem)",
-              lineHeight: 1.12,
-              color: "var(--green-950)",
-              marginBottom: "1.5rem",
-              letterSpacing: "-0.02em",
-            }}
-          >
-            Teach what you know.
-            <br />
-            <em style={{ color: "var(--green-600)" }}>
-              Learn what you need.
-            </em>
-          </h1>
+                    <div>
 
-          <p
-            style={{
-              fontSize: "1.1rem",
-              color: "var(--green-700)",
-              lineHeight: 1.7,
-              maxWidth: "560px",
-              margin: "0 auto 2.5rem",
-              fontWeight: 300,
-            }}
-          >
-            Skilltrade connects professionals through skill exchange. No money,
-            no hierarchy. Just people making each other better.
-          </p>
+                        <h1 className="text-5xl md:text-7xl leading-tight font-semibold mb-6 tracking-tight">
+                            Exchange skills.
+                            <br />
+                            <span className="text-(--green-600)">Grow together.</span>
+                        </h1>
 
-          <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center", flexWrap: "wrap" }}>
-            <button
-              onClick={() => navigate(user ? "/dashboard" : "/signup")}
-              style={{
-                background: "var(--green-800)",
-                color: "#fff",
-                border: "none",
-                padding: "0.85rem 2rem",
-                borderRadius: "100px",
-                fontSize: "1rem",
-                fontWeight: 500,
-                cursor: "pointer",
-              }}
-            >
-              {user ? "Go to dashboard" : "Join the community"}
-            </button>
+                        <p className="text-lg text-(--green-700) max-w-xl mb-10">
+                            A modern way to learn, built on collaboration, not cost. Teach what
+                            you know, learn what you need.
+                        </p>
+
+                        <div className="flex gap-4 flex-wrap">
+                            <button
+                                onClick={() => navigate(user ? "/dashboard" : "/signup")}
+                                className="bg-(--green-800) text-white px-7 py-3 rounded-full flex items-center gap-2 hover:shadow-lg hover:-translate-y-0.5 transition"
+                            >
+                                {user ? "Go to Dashboard" : "Get Started"}
+                            </button>
+
+                            {!user && (
+                                <button
+                                    onClick={() => navigate("/login")}
+                                    className="border border-(--green-300) px-7 py-3 rounded-full hover:bg-(--green-50) transition"
+                                >
+                                    Sign In
+                                </button>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="relative">
+                        <div className="absolute -top-10 -left-10 w-40 h-40 bg-(--green-200) rounded-full blur-3xl opacity-40" />
+                        <div className="absolute -bottom-10 -right-10 w-52 h-52 bg-(--amber-300) rounded-full blur-3xl opacity-30" />
+
+                        <div className="relative bg-white rounded-3xl border-(--green-100) p-6 shadow-2xl">
+                            <div className="space-y-4">
+                                {["UI Design ↔ React", "Python ↔ Data Science", "Digital Marketing ↔ Social Media Management",  "Figma ↔ Django",  "TailwindCSS ↔ Custom CSS",  "JavaScript ↔ C++",  "LLMs ↔ Traditional ML"].map((item) => (
+                                    <div
+                                        key={item}
+                                        className="flex items-center justify-between bg-(--green-50) px-4 py-3 rounded-xl hover:scale-[1.02] transition"
+                                    >
+                                        <span className="text-sm">{item}</span>
+                                        <span className="text-xs text-(--green-600)">Match</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section className="w-full px-6 md:px-12 lg:px-20 pb-20">
+                <div className="max-w-375 mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+                    {[
+                        { num: "2,400+", label: "Skills" },
+                        { num: "840+", label: "Trades" },
+                        { num: "94%", label: "Success" },
+                        { num: "120+", label: "Cities" },
+                    ].map((s) => (
+                        <div
+                            key={s.label}
+                            className="bg-white rounded-2xl p-6 text-center border border-(--green-100) hover:shadow-xl hover:-translate-y-1 transition"
+                        >
+                            <div className="text-3xl font-semibold text-(--green-800)">
+                                {s.num}
+                            </div>
+                            <div className="text-xs uppercase tracking-wide text-(--green-500)">
+                                {s.label}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            <section className="w-full px-6 md:px-12 lg:px-20 pb-24">
+                <div className="max-w-375 mx-auto grid md:grid-cols-3 gap-10">
+                    {features.map((f) => {
+                        const Icon = f.icon;
+                        return (
+                            <div
+                                key={f.title}
+                                className="group bg-white p-10 rounded-3xl border border-(--green-100) hover:shadow-2xl hover:-translate-y-2 transition"
+                            >
+                                <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-(--green-50) mb-6 group-hover:scale-110 transition">
+                                    <Icon size={22} />
+                                </div>
+
+                                <h3 className="text-xl font-semibold mb-3">
+                                    {f.title}
+                                </h3>
+
+                                <p className="text-sm text-(--green-600) leading-relaxed">
+                                    {f.desc}
+                                </p>
+                            </div>
+                        );
+                    })}
+                </div>
+            </section>
 
             {!user && (
-              <button
-                onClick={() => navigate("/login")}
-                style={{
-                  background: "transparent",
-                  color: "var(--green-800)",
-                  border: "1.5px solid var(--green-200)",
-                  padding: "0.85rem 2rem",
-                  borderRadius: "100px",
-                  fontSize: "1rem",
-                  fontWeight: 500,
-                  cursor: "pointer",
-                }}
-              >
-                Sign in
-              </button>
+                <section className="w-full px-6 md:px-12 lg:px-20 pb-28">
+                    <div className="max-w-375 mx-auto">
+                        <div className="bg-(--green-900) rounded-3xl p-14 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+
+                            <div className="absolute w-72 h-72 bg-(--amber-400) opacity-20 blur-3xl -top-20 -right-20" />
+
+                            <div className="relative">
+                                <h2 className="text-4xl text-white font-semibold mb-3">
+                                    Ready to start trading?
+                                </h2>
+                                <p className="text-(--green-200) max-w-md">
+                                    Join a modern community of learners growing through collaboration.
+                                </p>
+                            </div>
+
+                            <button
+                                onClick={() => navigate("/signup")}
+                                className="relative bg-(--amber-400) text-(--green-950) px-7 py-3 rounded-full font-semibold hover:shadow-lg hover:-translate-y-0.5 transition"
+                            >
+                                Create Profile
+                            </button>
+                        </div>
+                    </div>
+                </section>
             )}
-          </div>
         </div>
-      </section>
-
-      <section style={{ ...section, marginBottom: "5rem" }}>
-        <div style={container}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-              gap: "1px",
-              background: "var(--green-100)",
-              borderRadius: "16px",
-              overflow: "hidden",
-            }}
-          >
-            {[
-              { num: "2,400+", label: "Skills listed" },
-              { num: "840+", label: "Trades completed" },
-              { num: "94%", label: "Match satisfaction" },
-            ].map((s) => (
-              <div
-                key={s.label}
-                style={{
-                  background: "var(--cream-100)",
-                  padding: "1.5rem",
-                  textAlign: "center",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "2rem",
-                    color: "var(--green-800)",
-                  }}
-                >
-                  {s.num}
-                </div>
-                <div
-                  style={{
-                    fontSize: "0.82rem",
-                    color: "var(--green-500)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.06em",
-                  }}
-                >
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section style={{ ...section, marginBottom: "6rem" }}>
-        <div style={container}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-              gap: "1.25rem",
-            }}
-          >
-            {features.map((f) => {
-              const Icon = f.icon;
-
-              return (
-                <div
-                  key={f.title}
-                  style={{
-                    background: "#fff",
-                    border: "1px solid var(--green-100)",
-                    borderRadius: "20px",
-                    padding: "2rem 1.75rem",
-                    transition: "all 0.2s ease",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 44,
-                      height: 44,
-                      borderRadius: "12px",
-                      background: "var(--green-50)",
-                      border: "1px solid var(--green-100)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginBottom: "1.25rem",
-                      color: "var(--green-700)",
-                    }}
-                  >
-                    <Icon size={20} />
-                  </div>
-
-                  <h3
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "1.15rem",
-                      color: "var(--green-900)",
-                      marginBottom: "0.6rem",
-                    }}
-                  >
-                    {f.title}
-                  </h3>
-
-                  <p
-                    style={{
-                      fontSize: "0.9rem",
-                      color: "var(--green-600)",
-                      lineHeight: 1.65,
-                      fontWeight: 300,
-                    }}
-                  >
-                    {f.desc}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {!user && (
-        <section style={{ ...section, marginBottom: "6rem" }}>
-          <div style={container}>
-            <div
-              style={{
-                background: "var(--green-900)",
-                borderRadius: "24px",
-                padding: "3.5rem 3rem",
-                textAlign: "center",
-              }}
-            >
-              <h2
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "2rem",
-                  color: "var(--cream-100)",
-                  marginBottom: "0.75rem",
-                }}
-              >
-                Ready to start trading?
-              </h2>
-
-              <p
-                style={{
-                  color: "var(--green-200)",
-                  fontSize: "0.95rem",
-                  marginBottom: "2rem",
-                  fontWeight: 300,
-                }}
-              >
-                Join a community of professionals learning from each other.
-              </p>
-
-              <button
-                onClick={() => navigate("/signup")}
-                style={{
-                  background: "var(--amber-400)",
-                  color: "var(--green-950)",
-                  border: "none",
-                  padding: "0.85rem 2rem",
-                  borderRadius: "100px",
-                  fontSize: "1rem",
-                  fontWeight: 600,
-                  cursor: "pointer",
-                }}
-              >
-                Create your profile
-              </button>
-            </div>
-          </div>
-        </section>
-      )}
-    </div>
-  );
+    );
 };
 
 export default Home;

@@ -18,111 +18,59 @@ const Signup = () => {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
+
             await setDoc(doc(db, "users", user.uid), {
                 email: user.email,
                 skillsOffered: [],
                 skillsWanted: [],
                 createdAt: new Date(),
             });
+
             navigate("/dashboard");
         } catch (err) {
             setError(
                 err.code === "auth/email-already-in-use"
                     ? "An account with this email already exists."
                     : err.code === "auth/weak-password"
-                        ? "Password must be at least 6 characters."
-                        : "Something went wrong. Please try again."
+                    ? "Password must be at least 6 characters."
+                    : "Something went wrong. Please try again."
             );
         }
         setLoading(false);
     };
 
     return (
-        <div
-            style={{
-                minHeight: "100vh",
-                background: "var(--cream-100)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "2rem",
-                fontFamily: "var(--font-body)",
-            }}
-        >
-            <div style={{ width: "100%", maxWidth: "420px" }}>
-                {/* Logo */}
-                <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-                    <a
-                        href="/"
-                        style={{
-                            fontFamily: "var(--font-display)",
-                            fontSize: "1.5rem",
-                            color: "var(--green-800)",
-                            textDecoration: "none",
-                        }}
-                    >
-                        Skilltrade
-                    </a>
-                </div>
+        <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-(--cream-100) font-(--font-body)">
+            <div className="w-full max-w-md">
+                <div className="bg-white border border-(--green-100) rounded-[28px] px-6 py-10 sm:px-10 shadow-[0_10px_30px_rgba(20,45,34,0.05)]">
 
-                <div
-                    style={{
-                        background: "#fff",
-                        border: "1px solid var(--green-100)",
-                        borderRadius: "24px",
-                        padding: "2.5rem",
-                    }}
-                >
-                    <h1
-                        style={{
-                            fontFamily: "var(--font-display)",
-                            fontSize: "1.75rem",
-                            color: "var(--green-950)",
-                            marginBottom: "0.4rem",
-                            letterSpacing: "-0.02em",
-                        }}
-                    >
-                        Create your account
+                    <div className="text-center mb-8">
+                        <Link
+                            to="/"
+                            className="text-[1.75rem] tracking-[-0.03em] text-(--green-800) font-(--font-display)"
+                        >
+                            Skilltrade
+                        </Link>
+                    </div>
+
+                    <h1 className="text-[1.75rem] text-center mb-1 tracking-[-0.02em] text-(--green-950) font-(--font-display)">
+                        Create account
                     </h1>
-                    <p
-                        style={{
-                            fontSize: "0.9rem",
-                            color: "var(--green-500)",
-                            marginBottom: "2rem",
-                            fontWeight: 300,
-                        }}
-                    >
-                        Join thousands of professionals trading skills.
+
+                    <p className="text-center text-sm mb-10 text-(--green-500) font-light">
+                        Join the community and start trading skills.
                     </p>
 
                     {error && (
-                        <div
-                            style={{
-                                background: "#fef2f2",
-                                border: "1px solid #fecaca",
-                                borderRadius: "10px",
-                                padding: "0.75rem 1rem",
-                                fontSize: "0.875rem",
-                                color: "#b91c1c",
-                                marginBottom: "1.25rem",
-                            }}
-                        >
+                        <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-6">
                             {error}
                         </div>
                     )}
 
-                    <form onSubmit={handleSignup}>
-                        <div style={{ marginBottom: "1rem" }}>
-                            <label
-                                style={{
-                                    display: "block",
-                                    fontSize: "0.82rem",
-                                    fontWeight: 500,
-                                    color: "var(--green-800)",
-                                    marginBottom: "0.4rem",
-                                    letterSpacing: "0.01em",
-                                }}
-                            >
+                    <form onSubmit={handleSignup} className="space-y-5">
+
+                        <div>
+                            <label className="block text-[0.82rem] font-semibold text-(--green-800) mb-2">
                                 Email address
                             </label>
                             <input
@@ -131,20 +79,12 @@ const Signup = () => {
                                 placeholder="you@company.com"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                style={inputStyle}
+                                className="w-full px-4 py-3 rounded-[14px] border-[1.5px] border-(--green-100) bg-(--cream-100) text-[0.95rem] text-(--green-950) outline-none focus:border-(--green-400) transition"
                             />
                         </div>
 
-                        <div style={{ marginBottom: "1.5rem" }}>
-                            <label
-                                style={{
-                                    display: "block",
-                                    fontSize: "0.82rem",
-                                    fontWeight: 500,
-                                    color: "var(--green-800)",
-                                    marginBottom: "0.4rem",
-                                }}
-                            >
+                        <div>
+                            <label className="block text-[0.82rem] font-semibold text-(--green-800) mb-2">
                                 Password
                             </label>
                             <input
@@ -153,71 +93,36 @@ const Signup = () => {
                                 placeholder="Min. 6 characters"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                style={inputStyle}
+                                className="w-full px-4 py-3 rounded-[14px] border-[1.5px] border-(--green-100) bg-(--cream-100) text-[0.95rem] text-(--green-950) outline-none focus:border-(--green-400) transition"
                             />
                         </div>
 
                         <button
                             type="submit"
                             disabled={loading}
-                            style={{
-                                width: "100%",
-                                background: loading ? "var(--green-400)" : "var(--green-800)",
-                                color: "#fff",
-                                border: "none",
-                                padding: "0.875rem",
-                                borderRadius: "100px",
-                                fontSize: "0.95rem",
-                                fontWeight: 500,
-                                cursor: loading ? "not-allowed" : "pointer",
-                                fontFamily: "var(--font-body)",
-                                transition: "background 0.2s",
-                                letterSpacing: "-0.01em",
-                            }}
+                            className={`w-full py-4 rounded-full text-white text-base font-medium transition 
+                                ${loading 
+                                    ? "bg-(--green-400) cursor-not-allowed" 
+                                    : "bg-(--green-800) hover:bg-(--green-700)"
+                                }`}
                         >
-                            {loading ? "Creating account..." : "Create account"}
+                            {loading ? "Creating account..." : "Get started"}
                         </button>
                     </form>
-                </div>
 
-                <p
-                    style={{
-                        textAlign: "center",
-                        marginTop: "1.5rem",
-                        fontSize: "0.875rem",
-                        color: "var(--green-500)",
-                    }}
-                >
-                    Already have an account?{" "}
-                    <Link
-                        to="/login"
-                        style={{
-                            color: "var(--green-800)",
-                            fontWeight: 500,
-                            textDecoration: "none",
-                            borderBottom: "1px solid var(--green-200)",
-                        }}
-                    >
-                        Sign in
-                    </Link>
-                </p>
+                    <p className="text-center mt-8 text-sm text-(--green-500)">
+                        Already have an account?{" "}
+                        <Link
+                            to="/login"
+                            className="text-(--green-800) font-semibold"
+                        >
+                            Sign in
+                        </Link>
+                    </p>
+                </div>
             </div>
         </div>
     );
-};
-
-const inputStyle = {
-    width: "100%",
-    padding: "0.75rem 1rem",
-    border: "1.5px solid var(--green-100)",
-    borderRadius: "12px",
-    fontSize: "0.9rem",
-    color: "var(--green-950)",
-    background: "var(--cream-100)",
-    fontFamily: "var(--font-body)",
-    outline: "none",
-    boxSizing: "border-box",
-    transition: "border-color 0.15s",
 };
 
 export default Signup;
