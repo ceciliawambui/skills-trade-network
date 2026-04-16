@@ -1,3 +1,8 @@
+/**
+ * The layout controller and state provider for the authenticated experience.
+ * It manages profile data, real-time trade statistics, and view-switching logic.
+ */
+
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../../firebase.config";
@@ -8,6 +13,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 
+// --- UI COMPONENTS ---
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import Overview from "../components/Overview";
@@ -18,11 +24,13 @@ import SettingsPanel from "../components/SettingsPanel";
 const Dashboard = () => {
   const { user, logout } = useAuth();
 
+  // --- VIEW STATE ---
+  // Determines which sub-component to render in the <main> area
   const [activeView, setActiveView] = useState("overview");
 
+  // --- DATA STATE ---
   const [skillsOffered, setSkillsOffered] = useState([]);
   const [skillsWanted, setSkillsWanted] = useState([]);
-
   const [incomingActive, setIncomingActive] = useState(0);
   const [outgoingActive, setOutgoingActive] = useState(0);
   const [pendingCount, setPendingCount] = useState(0);
@@ -38,8 +46,13 @@ const Dashboard = () => {
 
   const [loading, setLoading] = useState(true);
 
+  // Derived state: Total active exchanges
   const activeTrades = incomingActive + outgoingActive;
 
+  /**
+   * Effect: Static Profile Load
+   * Fetches the user's basic info once when the component mounts.
+   */
   useEffect(() => {
     if (!user) return;
 
@@ -72,12 +85,17 @@ const Dashboard = () => {
     fetchProfile();
   }, [user]);
 
-
+/**
+ * Effect: Real-time Statistics Listener
+ * Instead of fetching full trade objects, this listener iterates through
+ * the user's trade subcollection to calculate summary numbers for the UI.
+ * * Teaching Point: "Aggregation Logic." This is more efficient than 
+ * running three separate queries for 'active', 'pending', and 'role'.
+ */
 useEffect(() => {
   if (!user?.uid) return;
 
   const tradesRef = collection(db, "users", user.uid, "trades");
-
   let unsub;
 
   try {
@@ -91,11 +109,13 @@ useEffect(() => {
         snap.forEach((doc) => {
           const t = doc.data();
 
+          // Increment counters based on trade status and user role
           if (t.role === "receiver" && t.status === "active") incoming++;
           if (t.role === "initiator" && t.status === "active") outgoing++;
           if (t.role === "receiver" && t.status === "pending") pending++;
         });
 
+        // Batch updates to state to prevent unnecessary re-renders
         setIncomingActive(incoming);
         setOutgoingActive(outgoing);
         setPendingCount(pending);
@@ -114,10 +134,11 @@ useEffect(() => {
 }, [user]);
 
 
+  // --- LOADING GUARD ---
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-(--cream-100)">
-        <p className="text-(--green-400)">Loading dashboard...</p>
+        <p className="text-(--green-400) animate-pulse">Loading dashboard...</p>
       </div>
     );
   }
@@ -125,20 +146,25 @@ useEffect(() => {
   return (
     <div className="min-h-screen bg-(--cream-100) flex">
 
+      {/* --- SHARED NAVIGATION --- */}
       <Sidebar
         activeView={activeView}
         setActiveView={setActiveView}
         profile={profile}
         user={user}
-        pendingCount={pendingCount}
+        pendingCount={pendingCount} // Sidebar needs this for the red notification dot
       />
 
       <div className="flex-1 flex flex-col">
-
+        
+        {/* Topbar displays the title of the current view */}
         <Topbar activeView={activeView} profile={profile} />
 
+        {/* --- DYNAMIC CONTENT AREA --- */}
         <main className="flex-1 w-full max-w-7xl mx-auto px-6 lg:px-10 py-8">
 
+          {/* Conditional Rendering based on activeView */}
+          
           {activeView === "overview" && (
             <Overview
               profile={profile}
