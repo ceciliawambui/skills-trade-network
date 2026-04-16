@@ -6,6 +6,8 @@ import Explore from "./pages/Explore";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
+import ProposeTrade from "./pages/ProposeTrade";
+import TradeDetail from "./pages/TradeDetail";
 
 function App() {
   return (
@@ -25,8 +27,11 @@ function App() {
             </ProtectedRoute>
           }
         />
-      
+        <Route path="/trade/propose/:userId" element={<ProtectedRoute><ProposeTrade /></ProtectedRoute>} />
+        <Route path="/trade/:tradeId" element={<ProtectedRoute><TradeDetail /></ProtectedRoute>} />
+
       </Routes>
+
     </BrowserRouter>
   );
 }
